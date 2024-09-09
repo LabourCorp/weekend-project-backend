@@ -1,15 +1,41 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const admin = require('firebase-admin');
+const cors = require('cors')
+
+Initialize Firebase Admin SDK
+const serviceAccount = require('./path/to/serviceAccountKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://your-database-name.firebaseio.com'
+});
+
 const app = express();
-const { sequelize } = require('./models');
 
+app.use(cors());
+app.use(bodyParser.json());
+
+// Routes
+const otpRoutes = require('./routes/otpRoutes');
 const userRoutes = require('./routes/userRoutes');
+const customerRoutes = require('./routes/customerRoutes');
+const contractorRoutes = require('./routes/contractorRoutes');
 
-app.use(express.json());
+// Use routes
+app.use('/otp', otpRoutes);
+app.use('/users', userRoutes);
+app.use('/customers', customerRoutes);
+app.use('/contractors', contractorRoutes);
 
-app.use('/api/users', userRoutes);
+// Default route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Node.js OTP login app!');
 
-sequelize.sync().then(() => {
-  app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-  });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

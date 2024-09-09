@@ -1,8 +1,8 @@
-const User = require('./user');
 
-class Contractor extends User {
-  constructor(id, name, email, specialization, experience) {
-    super(id, name, email);
+class Contractor {
+  constructor(id, userid, specialization, experience) {
+    this.id = id;
+    this.userid = userid
     this.specialization = specialization;
     this.experience = experience;
   }

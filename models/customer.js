@@ -1,9 +1,7 @@
-const User = require('./user');
-
-class Customer extends User {
-  constructor(id, name, email, contactNumber) {
-    super(id, name, email);
-    this.contactNumber = contactNumber;
+class Customer {
+  constructor(id, userId) {
+    this.id = id;
+    this.userId = userId;
   }
 
   static collection() {
