@@ -1,41 +1,22 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const admin = require('firebase-admin');
-const cors = require('cors')
-
-Initialize Firebase Admin SDK
-const serviceAccount = require('./path/to/serviceAccountKey.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://your-database-name.firebaseio.com'
-});
+const labourRoutes = require('./routes/labourRoutes');
+const errorHandler = require('./utils/errorHandler');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(bodyParser.json());
+// Middleware
+app.use(bodyParser.json()); // Ensure this is included to parse JSON bodies
 
 // Routes
-const otpRoutes = require('./routes/otpRoutes');
-const userRoutes = require('./routes/userRoutes');
-const customerRoutes = require('./routes/customerRoutes');
-const contractorRoutes = require('./routes/contractorRoutes');
+app.use('/api', labourRoutes);
 
-// Use routes
-app.use('/otp', otpRoutes);
-app.use('/users', userRoutes);
-app.use('/customers', customerRoutes);
-app.use('/contractors', contractorRoutes);
+// Error Handling Middleware
+app.use(errorHandler);
 
-// Default route
-app.get('/', (req, res) => {
-  res.send('Welcome to the Node.js OTP login app!');
-
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
+// Start the Server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
