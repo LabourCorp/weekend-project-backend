@@ -4,6 +4,10 @@ const { validateLabour, handleValidationErrors } = require('../validators/labour
 const router = express.Router();
 
 // POST route to create a new user
-router.post('/labours', validateLabour, handleValidationErrors,LabourController.createLabour);
+router.post('/', validateLabour, handleValidationErrors, LabourController.createLabour);
+
+router.get('/', LabourController.getallLabour);
+
+router.get('/:id', LabourController.getLabourById);
 
 module.exports = router;

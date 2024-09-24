@@ -1,17 +1,17 @@
 const { getFirestore } = require('firebase-admin/firestore');
 const db = getFirestore();
 
-class LabourModel {
-  static async createLabour(labourData) {
-    try {
-      const docRef = db.collection('Labours').doc();
-      await docRef.set(labourData);
-      return docRef.id;
-    } catch (error) {
-      console.error('Error creating labour in database:', error.message);
-      throw error; // Ensure the error is propagated to be caught in the controller
-    }
+class Labour {
+  constructor(userId, isSkilled, expertise, { is_Available = 0 } = {}) {
+    this.userId = userId;
+    this.isSkilled = isSkilled;
+    this.expertise = expertise;
+    this.is_Available = is_Available;
+  }
+
+  static collection() {
+    return 'Labours';
   }
 }
 
-module.exports = LabourModel;
+module.exports = Labour;
